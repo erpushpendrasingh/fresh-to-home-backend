@@ -8,18 +8,15 @@ const productSchema = mongoose.Schema({
      mrp: String,
      weight: String,
      price: Number,
-     desc: String,
-     lineThroughMrp: String,
+     description: String,
      storageInstructions: String,
      marketedBy: String,
      cartQuantity: Number,
      flash_sale: Boolean,
      combo_Packs: Boolean,
      deal_of_the_day: Boolean,
-     stoct_status: Boolean,
+     stock: Number,
      seller_name: String,
-     product_type: String,
-     
 });
 
 const Product = mongoose.model("Product", productSchema);

@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
 
           await user.save();
 
-          res.json({ msg: "Registered successfully" });
+          res.json({ msg: "Registered successfully",data:user });
      } catch (error) {
           console.error(error);
           res.status(500).json({ msg: "Internal Server Error" });
@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
                return res.status(401).json({ msg: "Invalid password" });
           }
 
-          res.json({ msg: "Login successful" });
+          res.json({ msg: "Login successful",data:user });
      } catch (error) {
           console.error(error);
           res.status(500).json({ msg: "Internal Server Error" });
