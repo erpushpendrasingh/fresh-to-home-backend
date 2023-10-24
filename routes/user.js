@@ -4,10 +4,11 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 router.post("/register", async (req, res) => {
-     const { mobile, firstname, lastname, email, password } = req.body;
-
+     const { mobile, firstname, lastname, email, password, otp } = req.body;
+     console.log("body:", req.body);
      try {
           const user = await User.findOne({ mobile });
+          console.log(user.otp);
 
           if (!user || !user.otp) {
                return res
@@ -25,7 +26,41 @@ router.post("/register", async (req, res) => {
 
           await user.save();
 
-          res.json({ msg: "Registered successfully",data:user });
+          res.json({ msg: "Registered successfully", data: user });
+     } catch (error) {
+          console.error(error);
+          res.status(500).json({ msg: "Internal Server Error" });
+     }
+});
+router.post("/register/email", async (req, res) => {
+     const { mobile, firstname, lastname, email, password } = req.body;
+     console.log("body:", req.body);
+     try {
+          // Check if the email is already in use
+          const existingUser = await User.findOne({ email });
+
+          if (existingUser) {
+               return res
+                    .status(400)
+                    .json({ msg: "Email or password not correct" });
+          }
+
+          // Hash the user's password before storing it
+          const hashedPassword = await bcrypt.hash(password, 10);
+
+          // Create a new user record
+          const newUser = new User({
+               firstname,
+               lastname,
+               email,
+               mobile,
+               password: hashedPassword,
+          });
+
+          // Save the user to the database
+          await newUser.save();
+
+          res.json({ msg: "Registered successfully", data: newUser });
      } catch (error) {
           console.error(error);
           res.status(500).json({ msg: "Internal Server Error" });
@@ -49,7 +84,7 @@ router.post("/login", async (req, res) => {
                return res.status(401).json({ msg: "Invalid password" });
           }
 
-          res.json({ msg: "Login successful",data:user });
+          res.json({ msg: "Login successful", data: user });
      } catch (error) {
           console.error(error);
           res.status(500).json({ msg: "Internal Server Error" });

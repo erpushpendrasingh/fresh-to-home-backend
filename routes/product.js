@@ -4,34 +4,34 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const Product = require("../models/Product");
 
-router.post("/register", async (req, res) => {
-     const { mobile, firstname, lastname, email, password } = req.body;
+// router.post("/register", async (req, res) => {
+//      const { mobile, firstname, lastname, email, password } = req.body;
 
-     try {
-          const user = await User.findOne({ mobile });
+//      try {
+//           const user = await User.findOne({ mobile });
 
-          if (!user || !user.otp) {
-               return res
-                    .status(400)
-                    .json({ msg: "Mobile number not verified." });
-          }
+//           if (!user || !user.otp) {
+//                return res
+//                     .status(400)
+//                     .json({ msg: "Mobile number not verified." });
+//           }
 
-          const hashedPassword = await bcrypt.hash(password, 10);
+//           const hashedPassword = await bcrypt.hash(password, 10);
 
-          user.firstname = firstname;
-          user.lastname = lastname;
-          user.email = email;
-          user.password = hashedPassword;
-          user.otp = "";
+//           user.firstname = firstname;
+//           user.lastname = lastname;
+//           user.email = email;
+//           user.password = hashedPassword;
+//           user.otp = "";
 
-          await user.save();
+//           await user.save();
 
-          res.json({ msg: "Registered successfully" });
-     } catch (error) {
-          console.error(error);
-          res.status(500).json({ msg: "Internal Server Error" });
-     }
-});
+//           res.json({ msg: "Registered successfully" });
+//      } catch (error) {
+//           console.error(error);
+//           res.status(500).json({ msg: "Internal Server Error" });
+//      }
+// });
 
 router.post("/add", async (req, res) => {
      const {
